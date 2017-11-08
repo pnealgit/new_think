@@ -40,4 +40,3 @@ function draw_foods() {
 } //end of function
 
 
-

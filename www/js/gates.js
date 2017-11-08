@@ -76,16 +76,13 @@ function make_gate_outputs(number_node_outputs) {
 
 function make_state(gates) {
     "use strict";
-    //to start off
-    var state_length = sensor_input_length;
-    var state = [];
-    for (var g = 0; g < gates.length; g++) {
-       state_length += gates[g].outputs.length;
-    }
 
-    for (var k = 0; k < state_length; k++) {
-       state.push(Math.round(1 - Math.random()));
+    var gate_state = [];
+    for (var g = 0; g < gates.length; g++) {
+       for (var k = 0 ;k <gates[g].outputs.length; k++) {
+           gate_state.push(Math.round(1 - Math.random()));
+       }
     }
-    return state; 
+    return gate_state; 
 }
 

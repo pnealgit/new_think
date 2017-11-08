@@ -3,9 +3,7 @@ var c = canvas.getContext("2d");
 var width = canvas.width;
 var height = canvas.height;
 
-var sensor_input_length = 5;
 var number_outputs = 6;
-
 var animation_count = 0;
 var dna_string_length = 5000;
 var sensor_length = 20;
@@ -18,6 +16,7 @@ var runAnimation = {
 function check_collision(c1,c2) {
     "use strict";
 
+    c1.food_hit = [0]; 
     var deltax = 0;
     var deltay = 0;
     deltax = c1.x - c2.x;
@@ -29,8 +28,7 @@ function check_collision(c1,c2) {
       //food
       //console.log("food collision",dist, c1,c2);
          c1.reward++;
-         //0-3 wall collisions
-         c1.state[4] = 1;
+         c1.food_hit[0] = 1;
          return true;
       } //
     } //end of if on dist
@@ -63,16 +61,14 @@ function animate() {
     draw_circle(circles[i]);
 
     //time to animate our circles ladies and gentlemen.
-    for (var j = 0; j < sensor_input_length; j++) {
-       circles[i].state[j] = 0;
-    }
+   
+    put_xy_in_state(circles[i]);
+    check_for_wall(circles[i]);
     check_for_collisions_with_food(circles[i]);
-    //console.log("AFTER G V : ",circles[i].vx, circles[i].vy);
-
+    glue_together_inputs(circles[i]);
 
     think(circles[i]);
     get_velocities(circles[i]);
-    check_for_wall(circles[i]);
 
     circles[i].x += circles[i].vx;
     circles[i].y += circles[i].vy;
