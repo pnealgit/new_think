@@ -82,7 +82,12 @@ for (i = 0; i < E; i++)
 
 s = new sigma({
   graph: gnull,
-  container: 'graph-container'
+  renderers: [
+  {
+  container: document.getElementById('graph-container'),
+  type: 'canvas'
+  }
+  ]
 });
 
 var gr;
@@ -103,7 +108,13 @@ if(s.graph ) {
 // Instantiate sigma:
 s = new sigma({
   graph: g,
-  container: 'graph-container'
+  container: 'graph-container',
+  renderers: [
+  {
+  container: document.getElementById('graph-container'),
+  type: 'canvas'
+  }
+  ]
 });
 s.refresh();
 } //end of function;
