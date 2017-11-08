@@ -6,7 +6,7 @@ function make_circles() {
     for (i = 0; i < number_of_circles; i++) {
         circles.push(new Circle(i));
     }
-    console.log("circles",circles);
+    //console.log("circles",circles);
 }
 
 function Circle(i) {
@@ -35,58 +35,38 @@ function check_for_wall(c1) {
     // left wall
     var did = false;
     if (c1.x - c1.r + c1.vx < container.x ) {
-      //console.log("BEFORE LEFT WALL COLLISION: ",c1.vx);
-      c1.vx = -1.0 * c1.vx;
-      c1.x += 2 * c1.vx;
+      //c1.vx = -1.0 * c1.vx;
+      c1.x = container.width - (c1.r+1);
       c1.state[0] = 1;
       did = true;
-      //console.log("AFTER LEFT WALL COLLISION: ",c1.vx);
     } 
 
     // right wall
     if ( c1.x + c1.r + c1.vx > container.x + container.width) {
-      //console.log("BEFORE RIGHT WALL COLLISION: ",c1.vx);
-      c1.vx = -1.0 * c1.vx;
-      c1.x -= 2 * c1.vx;
+      //c1.vx = -1.0 * c1.vx;
+      c1.x = c1.r+1;
       c1.state[1] = 1;
       did = true;
-      //console.log("AFTER RIGHT WALL COLLISION: ",c1.vx);
     }
 
     //bounce of horizontal walls
     //bottom wall
     if (c1.y + c1.r + c1.vy > container.y + container.height) {
-      //console.log("BEFORE BOTTOM WALL COLLISION: ",c1.vy);
-      c1.vy = -1.0 * c1.vy;
-      c1.y -= 2 * c1.vy;
+      //c1.vy = -1.0 * c1.vy;
+      c1.y = c1.r+1;
       c1.state[2] = 1;
       did = true;
-      //console.log("AFTER BOTTOM WALL COLLISION: ",c1.vy);
     }
 
     //top wall
     if (c1.y - c1.r + c1.vy < container.y) {
-      //console.log("BEFORE TOP WALL COLLISION: ",c1.vy);
-      c1.vy = -1.0 * c1.vy;
-      c1.y += 2 * c1.vy;
+      //c1.vy = -1.0 * c1.vy;
+      c1.y = container.height - (c1.r+1);
       c1.state[3] = 1;
       did = true;
-      //console.log("AFTER TOP WALL COLLISION: ",c1.vy);
     } //end of if
     return did;
 
-} //end of function
-
-function check_for_collisions_between_circles(c1) {
-    for(var j = 0; j < circles.length; j++) {
-       if (c1.id == j) {
-           continue;
-       }
-       if(check_collision(c1,circles[j])) {
-         console.log("circle collision state: ",c1.state);
-         break;
-       }
-     } //end of loop on j
 } //end of function
 
 function make_dna_string() {
@@ -131,48 +111,31 @@ function get_velocities(c1) {
     var outputs = [];
     var begin = c1.state.length - number_outputs;
     outputs = c1.state.slice(begin);
-    var bs = '' + outputs.join(''); 
-    var ibs =  parseInt(bs,2);
+    
+    var x_info = outputs.slice(0,3);
+    var y_info = outputs.slice(3);
+    var sign_x = x_info.shift();
+       
+    var sdx =  '' + x_info.join('');
+    var sign_y = y_info.shift();
+    var sdy =  '' + y_info.join('');
 
-    //change these to add in velocities
-    if (ibs == 0) {
-    //    c1.vx = -2;
-    //    c1.vy = -2;
+    var d_vx = parseInt(sdx,2);
+    var d_vy = parseInt(sdy,2);
+
+    if (sign_x < 1 ) {
+        d_vx = -d_vx;
     }
-    if (ibs == 1) {
-        c1.vx = 0;
-        c1.vy = -2;
+    if (sign_y < 1 ) {
+        d_vy = -d_vy;
     }
-    if (ibs == 2) {
-        c1.vx = 2;
-        c1.vy = -2;
-    }
-    if (ibs == 3) {
-        c1.vx = -2;
-        c1.vy = 0;
-    }
-    if (ibs == 4) {
-        c1.vx = 0;
-        c1.vy = 0;
-    }
-    if (ibs == 5) {
-        c1.vx = 2;
-        c1.vy = 0;
-    }
-    if (ibs == 6) {
-        c1.vx = -2;
-        c1.vy = 2;
-    }
-    if (ibs == 7) {
-        c1.vx = 0;
-        c1.vy = 2;
-    }
-    if (ibs == 8) {
-        c1.vx = 2;
-        c1.vy = 2;
-    }
+  
+ 
+    c1.vx = d_vx;
+    c1.vy = d_vy;
+
     clear_inputs(c1);
-    clear_outputs(c1); 
+    //clear_outputs(c1); 
 }
 
 function clear_inputs(c1) {

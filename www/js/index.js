@@ -3,13 +3,13 @@ var c = canvas.getContext("2d");
 var width = canvas.width;
 var height = canvas.height;
 
-var sensor_input_length = 8;
-var number_outputs = 4;
+var sensor_input_length = 5;
+var number_outputs = 6;
 
 var animation_count = 0;
 var dna_string_length = 5000;
 var sensor_length = 20;
-var number_of_circles = 20;
+var number_of_circles = 2;
 
 var runAnimation = {
     value: true
@@ -24,19 +24,13 @@ function check_collision(c1,c2) {
     deltay = c1.y - c2.y;
     var dist = Math.hypot(deltax , deltay );
 
-    if(dist < c1.r+c2.r) {
-/*
-      if (c1.sprite_type =='c' && c2.sprite_type == 'c') {
-         c1.reward--;
-         c1.state[0] = 1;
-         return true;
-      }
-*/
-      if (c2.sprite_type =='f') {
-         //food
+    if (dist < c1.r) {
+    if (c2.sprite_type =='f') {
+      //food
       //console.log("food collision",dist, c1,c2);
          c1.reward++;
-         c1.state[5] = 1;
+         //0-3 wall collisions
+         c1.state[4] = 1;
          return true;
       } //
     } //end of if on dist
@@ -72,14 +66,14 @@ function animate() {
     for (var j = 0; j < sensor_input_length; j++) {
        circles[i].state[j] = 0;
     }
-   // check_for_collisions_between_circles(circles[i]);
     check_for_collisions_with_food(circles[i]);
-    //check_for_sensor_collisions(circles[i]);
+    //console.log("AFTER G V : ",circles[i].vx, circles[i].vy);
 
-    if (!check_for_wall(circles[i])) {
-    }
+
     think(circles[i]);
     get_velocities(circles[i]);
+    check_for_wall(circles[i]);
+
     circles[i].x += circles[i].vx;
     circles[i].y += circles[i].vy;
 

@@ -2,6 +2,7 @@ function think(c1) {
     "use strict";
     var state_length = c1.state.length;
     var number_of_gates = c1.gates.length; 
+
     var gate = {}
     var result = [];
     for (var g = 0; g < number_of_gates; g++) {
@@ -17,11 +18,9 @@ function think(c1) {
 
        for (var o = 0; o < gate.outputs.length; o++) {
            o_index = sensor_input_length + gate.outputs[o] % o_shift;
-if (o_index < sensor_input_length) {
-   console.log("HEY !!! indexing into inputs ");
-}
            c1.state[o_index] = result[o];
        };
+
     } //end of loop on gates
 }
 function xor_gate(g1,state) {

@@ -53,8 +53,8 @@ function make_xor_gate() {
     xor_gate.inputs = make_gate_inputs(number_inputs);
 
     temp = working_genome.shift();
-    var number_outputs = min_number_outputs + (temp % max_number_outputs);
-    xor_gate.outputs = make_gate_outputs(number_outputs);
+    var number_node_outputs = min_number_outputs + (temp % max_number_outputs);
+    xor_gate.outputs = make_gate_outputs(number_node_outputs);
     return xor_gate;
 }
 
@@ -66,9 +66,9 @@ function make_gate_inputs(number_inputs) {
     return gate_inputs;
 }
 
-function make_gate_outputs(number_outputs) {
+function make_gate_outputs(number_node_outputs) {
     var gate_outputs = [];
-    for (var k = 0; k < number_outputs; k++) {
+    for (var k = 0; k < number_node_outputs; k++) {
            gate_outputs.push(working_genome.shift());
     }
     return gate_outputs;

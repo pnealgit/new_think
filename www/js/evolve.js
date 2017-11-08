@@ -4,7 +4,7 @@ function evolve() {
     return b.reward - a.reward;
     });
 
-   console.log(animation_count.toString(2));
+   //console.log(animation_count.toString(2));
    console.log("BEST CIRCLE: ",circles[0]);
 
    var avg_reward = 0;

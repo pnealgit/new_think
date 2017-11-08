@@ -94,9 +94,7 @@ var gr;
 var p;
 var cc;
 if(s.graph ) {
-    console.log("GRAPH EXISTS");
     s.graph.clear();
-    //s.graph.kill();
     gr = document.querySelector('#graph-container');
     p  = gr.parentNode;
     p.removeChild(gr);
