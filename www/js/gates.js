@@ -19,6 +19,7 @@ function make_gates(genome) {
   for (var i = 0;i < number_of_gates; i++) {
     gates.push(new Gate());
   }
+
   return gates;
 }  //end of make_gates
 
@@ -37,9 +38,25 @@ function Gate() {
     }
     if (type == 2) {
        //for now , all is xor
-       gate = make_xor_gate();
+       gate = make_or_gate();
     }
     return gate;
+}
+
+function make_or_gate() {
+    "use strict";
+
+    var or_gate = {};
+    or_gate.type = 2;
+    var temp = working_genome.shift();
+    var number_inputs = min_number_inputs + (temp % max_number_inputs);
+    //var number_inputs = 2; //hardwire for now
+    or_gate.gate_inputs = make_gate_inputs(number_inputs);
+
+    temp = working_genome.shift();
+    var number_node_outputs = min_number_outputs + (temp % max_number_outputs);
+    or_gate.gate_outputs = make_gate_outputs(number_node_outputs);
+    return or_gate;
 }
 
 function make_xor_gate() {
@@ -49,12 +66,12 @@ function make_xor_gate() {
     xor_gate.type = 1;
     var temp = working_genome.shift();
     var number_inputs = min_number_inputs + (temp % max_number_inputs);
-    var number_inputs = 2; //hardwire for now
-    xor_gate.inputs = make_gate_inputs(number_inputs);
+    //var number_inputs = 2; //hardwire for now
+    xor_gate.gate_inputs = make_gate_inputs(number_inputs);
 
     temp = working_genome.shift();
     var number_node_outputs = min_number_outputs + (temp % max_number_outputs);
-    xor_gate.outputs = make_gate_outputs(number_node_outputs);
+    xor_gate.gate_outputs = make_gate_outputs(number_node_outputs);
     return xor_gate;
 }
 
@@ -79,7 +96,7 @@ function make_state(gates) {
 
     var gate_state = [];
     for (var g = 0; g < gates.length; g++) {
-       for (var k = 0 ;k <gates[g].outputs.length; k++) {
+       for (var k = 0 ;k <gates[g].gate_outputs.length; k++) {
            gate_state.push(Math.round(1 - Math.random()));
        }
     }

@@ -29,56 +29,15 @@ function Circle(i) {
     circle.bpos_sensor = [];
     circle.food_sensor = [];
     circle.wall_sensors = [];
-    circle.inputs = [];
+    circle.sensor_data = [];
     circle.outputs = [];
     return circle;
 }
 
-function check_for_wall(c1) {
-   "use strict;" 
-
-    c1.wall_hits = [0,0,0,0];
-    // left wall
-    var did = false;
-    if (c1.x - c1.r + c1.vx < container.x ) {
-      //c1.vx = -1.0 * c1.vx;
-      c1.x = container.width - (c1.r+1);
-      c1.wall_sensors[0] = 1;
-      did = true;
-    } 
-
-    // right wall
-    if ( c1.x + c1.r + c1.vx > container.x + container.width) {
-      //c1.vx = -1.0 * c1.vx;
-      c1.x = c1.r+1;
-      c1.wall_sensors[1] = 1;
-      did = true;
-    }
-
-    //bounce of horizontal walls
-    //bottom wall
-    if (c1.y + c1.r + c1.vy > container.y + container.height) {
-      //c1.vy = -1.0 * c1.vy;
-      c1.y = c1.r+1;
-      c1.wall_sensors[2] = 1;
-      did = true;
-    }
-
-    //top wall
-    if (c1.y - c1.r + c1.vy < container.y) {
-      //c1.vy = -1.0 * c1.vy;
-      c1.y = container.height - (c1.r+1);
-      c1.wall_sensors[3] = 1;
-      did = true;
-    } //end of if
-    return did;
-
-} //end of function
-
 function make_dna_string() {
     var dna_string = [];
     for (var i = 0; i < dna_string_length; i++) {
-        dna_string.push(randomIntFromInterval(4,9));  
+        dna_string.push(randomIntFromInterval(0,10000));  
     }
     return dna_string;
 }    
@@ -106,76 +65,30 @@ function draw_circle(c1) {
     c.lineTo(c1.sensor_xpos,c1.sensor_ypos);
     c.stroke();
     c.closePath();
-
-
 } //end of function
-
-
-function get_velocities(c1) {
-    "use strict";
-    var sum = 0;
-    
-    var x_info = c1.outputs.slice(0,3);
-    var y_info = c1.outputs.slice(3);
-    var sign_x = x_info.shift();
-       
-    var sdx =  '' + x_info.join('');
-    var sign_y = y_info.shift();
-    var sdy =  '' + y_info.join('');
-
-    var d_vx = parseInt(sdx,2);
-    var d_vy = parseInt(sdy,2);
-
-    if (sign_x < 1 ) {
-        d_vx = -d_vx;
-    }
-    if (sign_y < 1 ) {
-        d_vy = -d_vy;
-    }
-  
- 
-    c1.vx = d_vx;
-    c1.vy = d_vy;
-    for (var z = 0; z < c1.outputs.length; z++) {
-        c1.outputs[z] = 0;
-    }
-}
 
 function put_xy_in_state(c1) {
     "use strict";
-    c1.bpos = [];
-    var xpos = c1.x;
-    var ypos = c1.y;
+    c1.bpos_sensor = [];
 
-    var bxpos = xpos.toString(2);
-    var bypos = ypos.toString(2);
+    var bxpos = c1.x.toString(2);
+    var bypos = c1.y.toString(2);
     var pbxpos = '';
     var pbypos = '';
     pbxpos = bxpos.padStart(9,'0');
     pbypos = bypos.padStart(9,'0');
 
-    console.log("c1.x: ",c1.x," bxpos",bxpos,pbxpos);
-    console.log("c1.y: ",c1.y," bypos",bypos,pbypos);
 
     var abxpos = [];
     abxpos = pbxpos.split('');
     var abypos = [];
     abypos = pbypos.split('');
-console.log("abyxpos",abxpos);
     for (var k = 0; k < abxpos.length; k++) {
-        c1.bpos.push(+abxpos[k]);
+        c1.bpos_sensor.push(+abxpos[k]);
     }
 
     for (var k = 0; k < abypos.length; k++) {
-        c1.bpos.push(+abypos[k]);
+        c1.bpos_sensor.push(+abypos[k]);
     }
-
-    console.log("bpos: ",c1.bpos);
-
 }
 
-
-function glue_together_inputs(c1) {
-   c1.inputs.concat(c1.bpos_sensor,
-        c1.wall_sensors,c1.food_sensor);
-}

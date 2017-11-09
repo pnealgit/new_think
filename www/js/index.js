@@ -7,33 +7,11 @@ var number_outputs = 6;
 var animation_count = 0;
 var dna_string_length = 5000;
 var sensor_length = 20;
-var number_of_circles = 2;
+var number_of_circles = 10;
 
 var runAnimation = {
     value: true
 };
-
-function check_collision(c1,c2) {
-    "use strict";
-
-    c1.food_hit = [0]; 
-    var deltax = 0;
-    var deltay = 0;
-    deltax = c1.x - c2.x;
-    deltay = c1.y - c2.y;
-    var dist = Math.hypot(deltax , deltay );
-
-    if (dist < c1.r) {
-    if (c2.sprite_type =='f') {
-      //food
-      //console.log("food collision",dist, c1,c2);
-         c1.reward++;
-         c1.food_hit[0] = 1;
-         return true;
-      } //
-    } //end of if on dist
-    return false;
-} //end of check_collision
 
 //create te container that will hold the boincing balls.
 var container = {
@@ -48,6 +26,8 @@ var container = {
 make_foods();
 make_circles();
 
+    
+//time to animate our circles ladies and gentlemen.
 function animate() {
    if(runAnimation.value) {
   //draw the container
@@ -59,20 +39,16 @@ function animate() {
   //loop throughj the circles array
   for (var i = 0; i < circles.length; i++) {
     draw_circle(circles[i]);
-
-    //time to animate our circles ladies and gentlemen.
-   
     put_xy_in_state(circles[i]);
     check_for_wall(circles[i]);
+
     check_for_collisions_with_food(circles[i]);
-    glue_together_inputs(circles[i]);
 
     think(circles[i]);
     get_velocities(circles[i]);
 
     circles[i].x += circles[i].vx;
     circles[i].y += circles[i].vy;
-
 
   } //end of for loop on circles
 
