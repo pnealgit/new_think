@@ -1,4 +1,4 @@
-function draw_graph() {
+function draw_graph(c1) {
 //todo --- on refresh get rid of old graph --
 //probably via the old canvas refresh trick
 /**
@@ -24,61 +24,150 @@ var i,
     }
 ;
 
-// Generate a random graph:
+//NOW LET'S GET BUSY
+/* state_t0
+   gates
+   state_t1
+*/
 
-var increment = 1.0/N;
-//INPUTS
-for (i = 0; i < N; i++)
+var my_id = '';
+var increment = 10;
+var graph_knt = 0;
+//MAKE STATE_t0
+//SENSORS
+for (var k = 0; k < c1.sensor_data.length; k++) {
+  my_id = 'gs0-' + graph_knt;
+  console.log("SENSORS: ",my_id);
+
   g.nodes.push({
-    id: 'I' + i,
-    label: 'I-' + i,
-    x: i * increment,
+    id: my_id,
+    label: my_id,
+    x: k * increment,
+    y: .2,
+    size: .1,
+    color: '000' 
+});
+graph_knt++;
+}
+ 
+//GATES AT  STATE_t0
+
+var my_stop = c1.sensor_data.length + c1.gates.length;
+
+for (var k = c1.sensor_data.length; k < my_stop; k++) {
+  my_id = 'gs0-' + k;
+  console.log("GATES AT S0 : ",my_id);
+
+  g.nodes.push({
+    id: my_id,
+    label: my_id,
+    x: k * increment,
     y: .3,
     size: .1,
     color: '#f00'
   });
+  graph_knt++;
+} //end of loop on gates
 
-//OUTPUTS
-for (i = 0; i < N; i++)
-  g.nodes.push({
-    id: 'O' + i,
-    label: 'O-' + i,
-    x: i * increment,
-    y: .9,
-    size: .1,
-    color: '#00f'
-  });
 
-//GATES
-for (i = 0; i < NG; i++)
+//MAKE CENTER WHICH ARE THE SAME GATES AS THE GATES AS S0
+
+var xx;
+for (var k = 0; k < c1.gates.length; k++) {
+  xx = c1.sensor_data.length + k; 
+  my_id = 'gc-' + xx;
+  console.log("GATES AT CENTER : ",my_id);
   g.nodes.push({
-    id: 'G' + i,
-    label: 'G-' + i,
-    x: .4 + ( i * increment),
+    id: my_id,
+    label: my_id,
+    x: k * increment,
     y: .6,
     size: .1,
-    color: '#0f0'
+    color: '#f00'
   });
+}
 
-//EDGES input to gate
-for (i = 0; i < E; i++)
-  g.edges.push({
-    id: 'eig' + i,
-    source: 'I' + (Math.random() * N | 0),
-    target: 'G' + (Math.random() * NG | 0),
-    size: .1,
-    color: '#FF0'
-  });
+//STATE_t1
+//GATES PLUS OUTPUTS
 
-//EDGES gate to output
-for (i = 0; i < E; i++)
-  g.edges.push({
-    id: 'ego' + i,
-    target: 'G' + (Math.random() * NG | 0),
-    source: 'O' + (Math.random() * N | 0),
+var zz ;
+for (var k = 0; k < c1.gates.length; k++) {
+  zz = c1.sensor_data.length + k;
+  my_id = 'gs1-' + zz;
+  console.log("GATES AT S1 : ",my_id);
+  g.nodes.push({
+    id: my_id,
+    label: my_id,
+    x: k * increment,
+    y: .9,
     size: .1,
-    color: '#0FF'
+    color: '#f00'
   });
+}
+//S1 OUTPUT NODES
+
+console.log("GATES LENGTH: ",c1.gates.length);
+var start = c1.sensor_data.length + c1.gates.length;
+stop = start + c1.outputs.length;
+
+for (var k = start; k < stop; k++) {
+  my_id = 'gs1-'+k;
+  console.log("OUTPUTS AT S1: ",my_id);
+  g.nodes.push({
+    id: my_id,
+    label: my_id,
+    x: k * increment,
+    y: .9,
+    size: .1,
+    color: '00f' 
+});
+} //end of loop on outputs
+
+//EDGES
+
+var ee = 0;
+var source;
+var target;
+var raw;
+
+//EDGES FROM STATE 0  TO GATES
+
+for (var k = 0; k < c1.gates.length; k++) {
+  for (var j = 0; j < c1.gates[k].gate_inputs.length; j++) {
+  source = 'gs0-'+c1.gates[k].gate_inputs[j];
+  target = 'gc-'+k;
+  my_id = 'e0c-'+source+'-'+target;
+  console.log("EDGE S0 to CENTER GATES: ",my_id);
+  g.edges.push({
+    id: my_id,
+    label: my_id,
+    source: source,
+    target: target,
+    size: .1,
+    color: '#f00'
+  });
+  } //end of loop on gate_inputs
+} //end of loop on gates
+
+//EDGES FROM CENTER GATES TO STATE 1
+for (var k = 0; k < c1.gates.length; k++) {
+  for (var j = 0; j < c1.gates[k].gate_outputs.length; j++) {
+  source = 'gc-'+c1.gates[k]; 
+  target = 'gs1-'+c1.gates[k].gate_outputs[j];
+  my_id = 'ec1-'+source+'-'+target;
+
+  g.edges.push({
+    id: my_id,
+    label: my_id,
+    source: source,
+    target: target,
+    size: .1,
+    color: '#f00'
+  });
+  ee++;
+  } //end of loop on gate_outputs
+} //end of loop on gates
+
 
 s = new sigma({
   graph: gnull,

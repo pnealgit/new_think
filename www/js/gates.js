@@ -103,3 +103,36 @@ function make_state(gates) {
     return gate_state; 
 }
 
+function adjust_for_modulo(c1) {
+  
+   //INPUTS 
+   var knt = c1.sensor_data.length;
+   for (var k = 0; k < c1.gates.length; k++) {
+      for (var j = 0; j < c1.gates[k].gate_inputs.length; j++) {
+         knt++;
+   }
+   }
+   c1.number_gate_inputs = knt;
+
+   for (var k = 0; k < c1.gates.length; k++) {
+      for (var j = 0; j < c1.gates[k].gate_inputs.length; j++) {
+         c1.gates[k].gate_inputs[j] = c1.gates[k].gate_inputs[j] % knt;
+   }
+   }
+
+   //OUTPUTS
+   knt = c1.outputs.length;
+   for (var k = 0; k < c1.gates.length; k++) {
+      for (var j = 0; j < c1.gates[k].gate_outputs.length; j++) {
+         knt++;
+   }
+   }
+   c1.number_gate_outputs = knt;
+
+   for (var k = 0; k < c1.gates.length; k++) {
+      for (var j = 0; j < c1.gates[k].gate_outputs.length; j++) {
+         c1.gates[k].gate_outputs[j] = c1.gates[k].gate_outputs[j] % knt;
+   }
+   }
+} //end of modulo function
+

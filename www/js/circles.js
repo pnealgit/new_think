@@ -23,6 +23,8 @@ function Circle(i) {
     circle.genome = make_dna_string();
     circle.gates = make_gates(circle.genome);
     circle.gate_state = make_state(circle.gates);
+    circle.number_gate_inputs = 0;
+    circle.number_gate_outputs = 0;
     circle.angle = Math.atan2(circle.vy,circle.vx); //radians
     circle.sensor_xpos = circle.x + (sensor_length+circle.r) * Math.cos(circle.angle);
     circle.sensor_ypos = circle.x + (sensor_length+circle.r) * Math.cos(circle.angle);

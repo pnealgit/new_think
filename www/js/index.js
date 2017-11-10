@@ -7,7 +7,7 @@ var number_outputs = 6;
 var animation_count = 0;
 var dna_string_length = 5000;
 var sensor_length = 20;
-var number_of_circles = 10;
+var number_of_circles = 5;
 
 var runAnimation = {
     value: true
@@ -25,6 +25,12 @@ var container = {
 
 make_foods();
 make_circles();
+//adjust for modulo
+
+for (var i = 0; i < circles.length; i++) {
+    adjust_for_modulo(circles[i]);
+}
+
 
     
 //time to animate our circles ladies and gentlemen.
@@ -53,7 +59,7 @@ function animate() {
   } //end of for loop on circles
 
   animation_count++;
-  if ((animation_count % 500) == 0) {
+  if ((animation_count % 200) == 0) {
      evolve();
   } 
   requestAnimationFrame(animate);

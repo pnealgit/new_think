@@ -6,6 +6,7 @@ function evolve() {
 
    //console.log(animation_count.toString(2));
    console.log("BEST CIRCLE: ",circles[0]);
+   draw_graph(circles[0]);
 
    var avg_reward = 0;
    var max_reward = -9999;
@@ -42,7 +43,6 @@ function evolve() {
     circles[i].reward = 0;
    }
 
-   draw_graph();
 
 } //end of function
 
