@@ -20,23 +20,26 @@ function Circle(i) {
     circle.vy = randomIntFromInterval(-2,3);  
     circle.color = randomIntFromInterval(4,360);  
     circle.reward = 0;
-    circle.genome = make_dna_string();
+    circle.genome = make_genome_string();
     circle.gates = make_gates(circle.genome);
-    circle.gate_state = make_state(circle.gates);
+    circle.state = make_state(); //for now state size is fixed
     circle.number_gate_inputs = 0;
     circle.number_gate_outputs = 0;
     circle.angle = Math.atan2(circle.vy,circle.vx); //radians
-    circle.sensor_xpos = circle.x + (sensor_length+circle.r) * Math.cos(circle.angle);
-    circle.sensor_ypos = circle.x + (sensor_length+circle.r) * Math.cos(circle.angle);
+    circle.sensor_xpos = circle.x + (antenna_length+circle.r) * Math.cos(circle.angle);
+    circle.sensor_ypos = circle.x + (antenna_length+circle.r) * Math.cos(circle.angle);
     circle.bpos_sensor = [];
     circle.food_sensor = [];
+    circle.antenna_sensor = [];
     circle.wall_sensors = [];
     circle.sensor_data = [];
     circle.outputs = [];
+    circle.map_xpos = 0;
+    circle.map_ypos = 0;
     return circle;
 }
 
-function make_dna_string() {
+function make_genome_string() {
     var dna_string = [];
     for (var i = 0; i < dna_string_length; i++) {
         dna_string.push(randomIntFromInterval(0,10000));  
@@ -56,7 +59,7 @@ function draw_circle(c1) {
     c.arc(c1.x, c1.y, c1.r, 0, Math.PI * 2, true);
     c.fill();
 
-    var sensor_distance = c1.r + sensor_length;
+    var sensor_distance = c1.r + antenna_length;
 
     var angle = Math.atan2(c1.vy,c1.vx); //radians
     c1.sensor_ypos = c1.y + sensor_distance * Math.sin(angle);
@@ -93,4 +96,24 @@ function put_xy_in_state(c1) {
         c1.bpos_sensor.push(+abypos[k]);
     }
 }
+function make_state() {
+     var my_state = [];
+     for (var k = 0; k < size_of_state; k++) {
+         my_state.push(Math.round(Math.random()));
+     }
+     return my_state;
+}
+
+function put_map_xy_in_state(c1) {
+    "use strict";
+    c1.bpos_sensor = [];
+    for (var k = 0;k < c1.map_xpos.length; k++) {
+        c1.bpos_sensor.push(c1.map_xpos[k]);
+    } 
+
+    for (var k = 0;k < c1.map_ypos.length; k++) {
+        c1.bpos_sensor.push(c1.map_ypos[k]);
+    } 
+} //end of function
+
 

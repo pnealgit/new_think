@@ -33,11 +33,9 @@ function Gate() {
     type = 1 + (temp % max_number_gate_types);
 
     if (type == 1) {
-       //for now , all is xor
        gate = make_xor_gate();
     }
     if (type == 2) {
-       //for now , all is xor
        gate = make_or_gate();
     }
     return gate;
@@ -78,7 +76,7 @@ function make_xor_gate() {
 function make_gate_inputs(number_inputs) {
     var gate_inputs = [];
     for (var k = 0; k < number_inputs; k++) {
-           gate_inputs.push(working_genome.shift());
+           gate_inputs.push(working_genome.shift() % size_of_state);
     }
     return gate_inputs;
 }
@@ -86,21 +84,9 @@ function make_gate_inputs(number_inputs) {
 function make_gate_outputs(number_node_outputs) {
     var gate_outputs = [];
     for (var k = 0; k < number_node_outputs; k++) {
-           gate_outputs.push(working_genome.shift());
+           gate_outputs.push(working_genome.shift() %size_of_state);
     }
     return gate_outputs;
-}
-
-function make_state(gates) {
-    "use strict";
-
-    var gate_state = [];
-    for (var g = 0; g < gates.length; g++) {
-       for (var k = 0 ;k <gates[g].gate_outputs.length; k++) {
-           gate_state.push(Math.round(1 - Math.random()));
-       }
-    }
-    return gate_state; 
 }
 
 function adjust_for_modulo(c1) {
