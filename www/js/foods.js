@@ -47,10 +47,19 @@ function check_collision(c1,c2) {
     } //end of if on dist
 
     //check for antenna collision with food
-    var dist = Math.hypot(c1.sensor_xpos-c2.x , c1.sensor_ypos - c2.y);
-    if (dist < c1.r) {
-         c1.reward+= 10
-         c1.antenna_sensor[0] = 1;
-    } //end of if on dist
+    c1.antenna_sensor = [];
+    var antenna = {};
+    var hit = 0;
+    for (var k = 0 ; k < c1.antennae.length; k++) {
+        
+        antenna = c1.antennae[k];
+        var dist = Math.hypot(antenna.xpos-c2.x , antenna.ypos - c2.y);
+        if (dist < c1.r) {
+             c1.reward+= 10
+             hit = 1;
+        } //end of if on dist
+        c1.antenna_sensor.push(hit);
+    } //end of loop
+
 } //end of check_collision
 

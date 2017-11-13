@@ -1,3 +1,14 @@
+function Genome() {
+    "use strict";
+    var genome_length = 5000;
+    var genome = [];
+    
+    for (var i = 0; i < genome_length; i++) {
+        genome.push(randomIntFromInterval(0,10000));
+    }
+    return genome;
+}   
+
 function evolve() {
 
     var crossover_rate = .2;
@@ -35,9 +46,10 @@ function evolve() {
     for (var j = 2; j < circles.length; j++) {
        //mutate a few of these suckers.
          mutate_dna_string(circles[j]);
-         
+         make_gates(circles[j].genome); 
          if (Math.random() < crossover_rate) {
              crossover_genome(circles[j]);
+             make_gates(circles[j].genome); 
          }
    } //end of loop on j
 

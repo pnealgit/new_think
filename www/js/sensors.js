@@ -1,46 +1,35 @@
+function make_antennae(c1) {
+   "use strict";
+   var antennae = [];
+   var ninety = Math.PI/2.0;
+   var angle = Math.atan2(c1.vy,c1.vx); //radians
+   var angle_min_ninety = angle - ninety;
+   var angle_plus_ninety = angle + ninety;
+ 
+   //console.log("angle_min: ",angle_min_ninety);
+   //console.log("angle_plus: ",angle_plus_ninety);
+ 
+   //console.log("al,r,angle: ",antenna_length,c1.r,angle);
 
-function check_for_sensor_collisions(c1) {
-    //check for collision with food
-    for (var k = 0; k < foods.length; k++) {
-       if( check_sensor_collision(c1,foods[k]) ) {
-          break;
-       };
-    } //end of loop on food - k
+   var c = Math.cos(angle); 
+   //console.log("c1.x,c1.y,Cosine ",c1.x,c1.y,c);
+
+
+   antenna = {}; 
+   antenna.xpos = c1.x + (antenna_length+c1.r) * Math.cos(angle_min_ninety);
+   antenna.ypos = c1.y + (antenna_length+c1.r) * Math.sin(angle_min_ninety);
+   antennae.push(antenna);
     
-    //check for collision with other circle
-/*
-    for (var k = 0; k < circles.length; k++) {
-       if( check_sensor_collision(c1,circles[k]) ) {
-          break;
-       };
-    } //end of loop on circles - k
-*/
+   var antenna = {};
+   antenna.xpos = c1.x + (antenna_length+c1.r) * Math.cos(angle);
+   antenna.ypos = c1.y + (antenna_length+c1.r) * Math.sin(angle);
+   antennae.push(antenna);
 
-} //end of function
+   antenna = {}; 
+   antenna.xpos = c1.x + (antenna_length+c1.r) * Math.cos(angle_plus_ninety);
+   antenna.ypos = c1.y + (antenna_length+c1.r) * Math.sin(angle_plus_ninety);
+   antennae.push(antenna);
 
-function check_sensor_collision(c1,c2) {
-    var deltax = 0;
-    var deltay = 0;
-    deltax = c1.sensor_xpos - c2.x;
-    deltay = c1.sensor_ypos - c2.y;
-    var dist = Math.hypot(deltax , deltay );
-
-    if(dist < c2.r) {
-      //check for another circle
-      if (c2.sprite_type == 'c') {
-         c1.reward--;
-         c1.state[3] = 1;
-         return true;
-      }
-
-      if (c2.sprite_type =='f') {
-         //food
-         c1.reward++;
-         c1.state[2] = 1;
-         return true;
-      } //
-    } //end of if on dist
-    return false;
-} //end of check_collision
-
+   c1.antennae = antennae;
+} //end of make_antennae
 

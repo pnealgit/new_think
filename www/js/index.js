@@ -42,7 +42,8 @@ function animate() {
 
   //loop throughj the circles array
   for (var i = 0; i < circles.length; i++) {
-    
+       
+    make_antennae(circles[i]); 
     draw_circle(circles[i]);
     //sensor input in order
     get_map_positions(circles[i]);

@@ -1,6 +1,6 @@
 var max_number_gates = 50;
 var min_number_gates = 10;
-var max_number_gate_types = 2;
+var max_number_gate_types = 3;
 var min_number_inputs = 2;
 var max_number_inputs = 4;
 var min_number_outputs = 1;
@@ -13,13 +13,14 @@ function make_gates(genome) {
   //gotta do a deeper copy
   working_genome = genome.slice();
 
+
   var gates = [];
   var number_of_gates = min_number_gates + (working_genome.shift() % max_number_gates);
+
 
   for (var i = 0;i < number_of_gates; i++) {
     gates.push(new Gate());
   }
-
   return gates;
 }  //end of make_gates
 
@@ -29,6 +30,10 @@ function Gate() {
     var gate = {};
     var temp;
     var type;
+    if (working_genome.length < 2) {
+      working_genome = genome.slice();
+    }
+
     temp = working_genome.shift();
     type = 1 + (temp % max_number_gate_types);
 
@@ -37,6 +42,9 @@ function Gate() {
     }
     if (type == 2) {
        gate = make_or_gate();
+    }
+    if (type == 3) {
+       gate = make_and_gate();
     }
     return gate;
 }
@@ -98,7 +106,6 @@ function adjust_for_modulo(c1) {
          knt++;
    }
    }
-   c1.number_gate_inputs = knt;
 
    for (var k = 0; k < c1.gates.length; k++) {
       for (var j = 0; j < c1.gates[k].gate_inputs.length; j++) {
@@ -113,7 +120,6 @@ function adjust_for_modulo(c1) {
          knt++;
    }
    }
-   c1.number_gate_outputs = knt;
 
    for (var k = 0; k < c1.gates.length; k++) {
       for (var j = 0; j < c1.gates[k].gate_outputs.length; j++) {
@@ -121,4 +127,20 @@ function adjust_for_modulo(c1) {
    }
    }
 } //end of modulo function
+
+function make_and_gate() {
+    "use strict";
+
+    var and_gate = {};
+    and_gate.type = 3;
+    var temp = working_genome.shift();
+    var number_inputs = min_number_inputs + (temp % max_number_inputs);
+    and_gate.gate_inputs = make_gate_inputs(number_inputs);
+
+    temp = working_genome.shift();
+    var number_node_outputs = min_number_outputs + (temp % max_number_outputs);
+    and_gate.gate_outputs = make_gate_outputs(number_node_outputs);
+    return and_gate;
+}
+
 
