@@ -27,7 +27,6 @@ function Circle(i) {
     circle.bpos_sensor = [];
     circle.food_sensor = [];
     circle.antenna_sensor = [];
-    circle.wall_sensors = [];
     circle.sensor_data = [];
     circle.outputs = [];
     circle.map_xpos = 0;

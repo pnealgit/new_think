@@ -3,13 +3,14 @@ var c = canvas.getContext("2d");
 var width = canvas.width;
 var height = canvas.height;
 
+console.log("CANVAS: ",width,height);
+
 var number_outputs = 6;
 var animation_count = 0;
-var animation_count_limit = 500;
-var dna_string_length = 5000;
+var animation_count_limit = 1000;
 var size_of_state = 50;
-var antenna_length = 20;
-var number_of_circles = 15;
+var antenna_length = 10;
+var number_of_circles = 25;
 
 var runAnimation = {
     value: true
@@ -19,8 +20,8 @@ var runAnimation = {
 var container = {
   x: 0,
   y: 0,
-  width: 600,
-  height: 300
+  width: canvas.width,
+  height: canvas.height
 };
 //create the array of circles that will be animated
 

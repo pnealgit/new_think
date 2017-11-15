@@ -1,6 +1,6 @@
 function Genome() {
     "use strict";
-    var genome_length = 5000;
+    var genome_length = 3000;
     var genome = [];
     
     for (var i = 0; i < genome_length; i++) {
@@ -35,15 +35,17 @@ function evolve() {
    var elite_knt = Math.round(worst_count/2);
 
    // replace worst with best
+   var kind_of_best = 0;
    for (var j = worst_index; j < circles.length; j++) {
-        circles[j] = JSON.parse(JSON.stringify(circles[0]));
+        kind_of_best = j % 3; 
+        circles[j] = JSON.parse(JSON.stringify(circles[kind_of_best]));
         if(Math.random() < .5) {
             circles[j] = new Circle(j);
         }
    } //end of loop on j
 
     //keep top 2 from mutation risk
-    for (var j = 2; j < circles.length; j++) {
+    for (var j = 3; j < circles.length; j++) {
        //mutate a few of these suckers.
          mutate_dna_string(circles[j]);
          make_gates(circles[j].genome); 

@@ -55,7 +55,7 @@ function check_collision(c1,c2) {
         antenna = c1.antennae[k];
         var dist = Math.hypot(antenna.xpos-c2.x , antenna.ypos - c2.y);
         if (dist < c1.r) {
-             c1.reward+= 10
+             c1.reward+= 2 
              hit = 1;
         } //end of if on dist
         c1.antenna_sensor.push(hit);
