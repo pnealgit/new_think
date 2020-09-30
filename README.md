@@ -1,6 +1,6 @@
 #new_think
 
-THIS REPOSITORY IS NO LONGER SUPPORTED. GO TO MNB_THINK for the latest.
+THIS REPOSITORY IS NO LONGER SUPPORTED. GO TO http://github.com/pnealgit/mnb_js/ FOR THE LATEST.
 
 A total javascript Markov Network Brain system.
 
