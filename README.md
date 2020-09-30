@@ -1,5 +1,7 @@
 #new_think
 
+THIS REPOSITORY IS NO LONGER SUPPORTED. GO TO MNB_THINK for the latest.
+
 A total javascript Markov Network Brain system.
 
 Circles search for food using a network of logic gates.
